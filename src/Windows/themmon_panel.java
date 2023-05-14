@@ -349,39 +349,39 @@ public class themmon_panel extends javax.swing.JFrame {
             StringBuilder sb = new StringBuilder(); 
             String gia = Nhapgia.getText();
             loai = (String) Chonloai.getSelectedItem();
-//            if (Nhapten.getText().equals("")) {
-//            sb.append("Bạn chưa nhập tên món!!!");
-//            } else if (loai.equals("Tất cả")) {
-//                sb.append("Vui lòng chọn loại món!!!");
-//            } else if (Nhapgia.getText().equals("")) {
-//                sb.append("Bạn chưa nhập giá món!!!");
-//            } 
-//            else if (Nhapanh.getIcon() == null ) {
-//                
-//                sb.append("Bạn chưa nhập ảnh món!!!");
-//            } else {
+            if (Nhapten.getText().equals("")) {
+            sb.append("Bạn chưa nhập tên món!!!");
+            } else if (loai.equals("Tất cả")) {
+                sb.append("Vui lòng chọn loại món!!!");
+            } else if (Nhapgia.getText().equals("")) {
+                sb.append("Bạn chưa nhập giá món!!!");
+            } 
+            else if (Nhapanh.getIcon() == null ) {
+                
+                sb.append("Bạn chưa nhập ảnh món!!!");
+            } else {
                 Pattern pattern = Pattern.compile("[0-9_-]$");
                 Matcher matchegia = pattern.matcher(gia);
                 if (matchegia.find()) {
                     if (dao.findByMaMon(Nhapma.getText()) != null) {
-                        JOptionPane.showMessageDialog(this, "Món ăn đã tồn tại");
+                        JOptionPane.showMessageDialog(qlimenu_jpn, "Món ăn đã tồn tại");
                     } else {
                         menuModel.setTenMon(Nhapten.getText());
                         menuModel.setLoai(loai);
                         menuModel.setDonGia(Float.valueOf(gia));
                         menuModel.setAnhMon(Files.readAllBytes(file.toPath()));
                         if (dao.insert(menuModel)) {
-                            JOptionPane.showMessageDialog(this, "Thêm món thành công");
+                            JOptionPane.showMessageDialog(qlimenu_jpn, "Thêm món thành công");
                             
                             Reset();
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số");
+                    JOptionPane.showMessageDialog(qlimenu_jpn, "Vui lòng nhập số");
                 }
-//            }
+            }
             if (sb.length() > 0) {
-                JOptionPane.showMessageDialog(this, sb);
+                JOptionPane.showMessageDialog(qlimenu_jpn, sb);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -423,32 +423,32 @@ public class themmon_panel extends javax.swing.JFrame {
                 Matcher matchegia = pattern.matcher(gia);
                 if (matchegia.find()) {
                     if(id.equals(Nhapma.getText()) && tenmon.equals(Nhapten.getText()) && loai.equals(loai)&& dgia.equals(gia)&& anh.equals(Nhapanh.getText())){
-                        JOptionPane.showMessageDialog(null, "Cập nhật thất bại");
+                        JOptionPane.showMessageDialog(qlimenu_jpn, "Cập nhật thất bại");
                         
                         Reset();
                     } else {
                         if(dao.update(menuModel)){
-                            JOptionPane.showMessageDialog(null, "Cập nhật món thành công");
+                            JOptionPane.showMessageDialog(qlimenu_jpn, "Cập nhật món thành công");
                             
                             Reset();
                             if(id.equals(Nhapma.getText()) && tenmon.equals(Nhapten.getText()) && loai.equals(loai)&& dgia.equals(gia)&& anh.equals(Nhapanh.getText())){
-                                JOptionPane.showMessageDialog(null, "Cập nhật thất bại");
+                                JOptionPane.showMessageDialog(qlimenu_jpn, "Cập nhật thất bại");
                                
                                 Reset();
                             }
                         } else if(dao.insert(menuModel)){
-                            JOptionPane.showMessageDialog(null, "Thêm món thành công");
+                            JOptionPane.showMessageDialog(qlimenu_jpn, "Thêm món thành công");
                             
                             Reset();
                         }
                     }
                     
                 } else {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số");
+                    JOptionPane.showMessageDialog(qlimenu_jpn, "Vui lòng nhập số");
                 }
             }
             if (sb.length() > 0) {
-                JOptionPane.showMessageDialog(null, sb);
+                JOptionPane.showMessageDialog(qlimenu_jpn, sb);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -459,11 +459,12 @@ public class themmon_panel extends javax.swing.JFrame {
         try {
             MenuDao menu = new MenuDao();
             if (menu.delete(id)) {
-                JOptionPane.showMessageDialog(null, "Xóa thành công");
+                int click = JOptionPane.showConfirmDialog(qlimenu_jpn, "Bạn có muốn xóa không?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                JOptionPane.showMessageDialog(qlimenu_jpn, "Xóa thành công");
                 
                 Reset();
             } else {
-                JOptionPane.showMessageDialog(null, "Vui lòng chọn hàng để xóa");
+                JOptionPane.showMessageDialog(qlimenu_jpn, "Vui lòng chọn hàng để xóa");
             }
         } catch (Exception e) {
         }
@@ -488,7 +489,7 @@ public class themmon_panel extends javax.swing.JFrame {
                 }
                 tblModel.fireTableDataChanged();//Cập nhật hiển thị dữ liệu trong bảng
             } else {
-                JOptionPane.showMessageDialog(null, "Không tìm thấy!!!");
+                JOptionPane.showMessageDialog(qlimenu_jpn, "Không tìm thấy!!!");
             }
         } catch (Exception e) {
         }
@@ -530,7 +531,7 @@ public class themmon_panel extends javax.swing.JFrame {
         // Chỉ cho phép chọn các file ảnh
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif");
         fileChooser.setFileFilter(filter);
-        fileChooser.showOpenDialog(null);
+        fileChooser.showOpenDialog(qlimenu_jpn);
         file = fileChooser.getSelectedFile();
         if (file != null) {
             Image img = ImageIO.read(file);
@@ -554,37 +555,7 @@ public class themmon_panel extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(themmon_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(themmon_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(themmon_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(themmon_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new themmon_panel().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable BangMenu;
